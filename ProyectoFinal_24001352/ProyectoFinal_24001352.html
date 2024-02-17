@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Cotizacion</title>
+</head>
+<body>
+
+<script id="Cotizacion">
+// Variables útiles
+var precio_base =  2000;
+var recargo =  0;
+var recargo_total =  0;
+var precio_final =  0;
+
+// Valores de los recargos
+var recargos_edad = [0,  0.1,  0.2,  0.3]; //  0% para edades menores a  18,  10% para  18-24,  20% para  25-49,  30% para  50 o más
+var recargos_edad_conyuge = [0,  0.1,  0.2,  0.3]; //  0% para edades menores a  18,  10% para  18-24,  20% para  25-49,  30% para  50 o más
+var recargo_hijos =  0.2; //  20%
+
+// Datos del asegurado
+var nombre = prompt("Ingrese su nombre, por favor");
+var edad_numero;
+
+// Solicitamos la edad y verificamos que sea válida
+do {
+  var edad = prompt("¿Cuantos años tiene? Ingrese solamente números ");
+  edad_numero = parseInt(edad);
+  if (isNaN(edad_numero) || edad_numero <  18) {
+    alert("Por favor, ingrese una edad válida mayor o igual a  18 años.");
+  }
+} while (isNaN(edad_numero) || edad_numero <  18);
+
+var casado = prompt("¿Está casado actualmente?");
+var edad_conyuge_numero =  0;
+
+// Comprobamos la edad del cónyuge, solamente si se está casado/a
+if ("SI" == casado.toUpperCase()) {
+  var edad_conyuge;
+  do {
+    edad_conyuge = prompt("¿Que edad tiene su esposo/a?");
+    edad_conyuge_numero = parseInt(edad_conyuge);
+    if (isNaN(edad_conyuge_numero) || edad_conyuge_numero <  18) {
+      alert("Por favor, ingrese una edad válida mayor o igual a  18 años.");
+    }
+  } while (isNaN(edad_conyuge_numero) || edad_conyuge_numero <  18);
+}
+
+// Comprobamos la cantidad de hijos
+var hijos = prompt("¿Tiene hijos o hijas?");
+var cantidad_hijos = hijos.toUpperCase() === "SI" ? parseInt(prompt("¿Cuántos hijos o hijas tiene?")) :  0;
+
+// Calculamos el recargo total basado en las respuestas ingresadas
+if (edad_numero >=  18 && edad_numero <  25) {
+  recargo = precio_base * recargos_edad[1];
+} else if (edad_numero >=  25 && edad_numero <  50) {
+  recargo = precio_base * recargos_edad[2];
+} else if (edad_numero >=  50) {
+  recargo = precio_base * recargos_edad[3];
+}
+
+if ("SI" == casado.toUpperCase()) {
+  if (edad_conyuge_numero >=  18 && edad_conyuge_numero <  25) {
+    recargo += precio_base * recargos_edad_conyuge[1];
+  } else if (edad_conyuge_numero >=  25 && edad_conyuge_numero <  50) {
+    recargo += precio_base * recargos_edad_conyuge[2];
+  } else if (edad_conyuge_numero >=  50) {
+    recargo += precio_base * recargos_edad_conyuge[3];
+  }
+}
+
+if (cantidad_hijos >  0) {
+  recargo += precio_base * recargo_hijos * cantidad_hijos;
+}
+
+// Sumamos todos los recargos que hemos obtenido
+recargo_total = recargo;
+
+// Calculamos el precio final
+precio_final = precio_base + recargo_total;
+
+// Resultado
+alert("Para el asegurado " + nombre);
+alert("El recargo total será de: " + recargo_total);
+alert("El precio será de: " + precio_final);
+
+</script>
+</body>
+</html>
